@@ -1,0 +1,25 @@
+{
+  "name": "aha-develop.google-sheets-importer",
+  "description": "Google Sheets Importer",
+  "version": "0.0.0",
+  "author": "aha-develop",
+  "repository": {
+    "type": "git",
+    "url": "Add github URL here"
+  },
+  "license": "MIT",
+  "ahaExtension": {
+    "cspSources": ["https://googleapis.com", "https://apis.google.com"],
+    "contributes": {
+      "importers": {
+        "google-sheets": {
+          "title": "Google Sheets",
+          "entryPoint": "src/importer.ts"
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@aha-app/aha-cli": "^1.8.0"
+  }
+}
