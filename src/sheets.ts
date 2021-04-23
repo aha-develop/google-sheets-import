@@ -5,9 +5,9 @@ const buildFetcher = () => {
   let authed: boolean = false;
 
   const doAuth = async (useCache: boolean) => {
-    authed = false;
+    console.log("useCache", useCache);
     token = (
-      await aha.auth("google", {
+      await aha.auth("google_sheets", {
         useCachedRetry: useCache,
       })
     ).token;
@@ -19,18 +19,18 @@ const buildFetcher = () => {
       await doAuth(true);
     }
 
-    try {
-      return fetch(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    } catch (err) {
-      if (authed && err && err.code && err.code === 401) {
-        await doAuth(false);
-        return await authedFetch(url);
-      }
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if(authed && response.status === 401) {
+      await doAuth(false);
+      return authedFetch(url);
     }
+
+    return response;
   };
 
   return authedFetch;

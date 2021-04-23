@@ -8,7 +8,7 @@ const importer = aha.getImporter<RowImport>(
   "aha-develop.google-sheets-importer.google-sheets"
 );
 
-const MAX_ROWS = 2;
+const MAX_ROWS = 50;
 
 importer.on(
   { action: "listFilters" },
