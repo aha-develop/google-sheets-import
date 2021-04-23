@@ -7,7 +7,7 @@ const buildFetcher = () => {
   const doAuth = async (useCache: boolean) => {
     console.log("useCache", useCache);
     token = (
-      await aha.auth("google_sheets", {
+      await aha.auth("google", {
         useCachedRetry: useCache,
       })
     ).token;
