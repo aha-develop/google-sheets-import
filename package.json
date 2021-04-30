@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "ahaExtension": {
-    "cspSources": ["https://googleapis.com", "https://apis.google.com"],
+    "cspSources": ["https://googleapis.com", "https://apis.google.com", "https://sheets.googleapis.com"],
     "contributes": {
       "importers": {
         "google-sheets": {
