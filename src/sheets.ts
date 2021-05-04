@@ -1,5 +1,9 @@
 const BASE_URI = "https://sheets.googleapis.com/v4/spreadsheets/";
 
+/**
+ * Creates a fetch function that authenticates with google on first use and adds
+ * the authentication headers to requests
+ */
 const buildFetcher = () => {
   let token: string;
   let authed: boolean = false;
