@@ -4,6 +4,8 @@ This is an importer extension for [Aha! Develop](https://www.aha.io/develop) for
 
 # Demo
 
+https://user-images.githubusercontent.com/8016/116961220-e216a800-acf6-11eb-8657-9b33494b6a70.mp4
+
 ## Working on the extension
 
 Install `aha-cli`:
