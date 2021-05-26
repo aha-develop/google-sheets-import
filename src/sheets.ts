@@ -29,7 +29,7 @@ const buildFetcher = () => {
       },
     });
 
-    if(authed && response.status === 401) {
+    if (authed && response.status === 401) {
       await doAuth(false);
       return authedFetch(url);
     }

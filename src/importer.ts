@@ -10,33 +10,30 @@ const importer = aha.getImporter<RowImport>(
 
 const MAX_ROWS = 50;
 
-importer.on(
-  { action: "listFilters" },
-  (): Aha.ListFilters => {
-    return {
-      sheetUrl: {
-        required: true,
-        title: "Sheet URL",
-        type: "text",
-      },
-      startFromRow: {
-        required: false,
-        title: "Start from row",
-        type: "text",
-      },
-      nameColumn: {
-        required: true,
-        title: "Name column",
-        type: "text",
-      },
-      descriptionColumn: {
-        required: false,
-        title: "Description column",
-        type: "text",
-      },
-    };
-  }
-);
+importer.on({ action: "listFilters" }, (): Aha.ListFilters => {
+  return {
+    sheetUrl: {
+      required: true,
+      title: "Sheet URL",
+      type: "text",
+    },
+    startFromRow: {
+      required: false,
+      title: "Start from row",
+      type: "text",
+    },
+    nameColumn: {
+      required: true,
+      title: "Name column",
+      type: "text",
+    },
+    descriptionColumn: {
+      required: false,
+      title: "Description column",
+      type: "text",
+    },
+  };
+});
 
 importer.on({ action: "filterValues" }, async ({ filterName, filters }) => {
   return [];
@@ -71,11 +68,18 @@ importer.on({ action: "listCandidates" }, async ({ filters, nextPage }) => {
 
   const values = await sheet.range(range);
   console.log(values);
+  if (!values.values) return { nextPage: null, records: [] }; // No more data.
+
   const nameIdx = cols.indexOf(filters.nameColumn);
   const descIdx = cols.indexOf(filters.descriptionColumn);
 
+  // Check if there are more pages of data.
+  let nextNextPage: number | null = null;
+  if (values.values.length <= MAX_ROWS) {
+    nextNextPage = row + MAX_ROWS;
+  }
   return {
-    nextPage: row + MAX_ROWS,
+    nextPage: nextNextPage,
     records: values.values.map((rowValue, idx) => {
       return {
         name: rowValue[nameIdx],
@@ -88,7 +92,7 @@ importer.on({ action: "listCandidates" }, async ({ filters, nextPage }) => {
 });
 
 importer.on({ action: "importRecord" }, async ({ importRecord, ahaRecord }) => {
-  const feature = (ahaRecord as unknown) as Aha.Feature;
+  const feature = ahaRecord as unknown as Aha.Feature;
   feature.description = importRecord.description;
   await feature.save();
 });
