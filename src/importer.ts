@@ -73,21 +73,19 @@ importer.on({ action: "listCandidates" }, async ({ filters, nextPage }) => {
   const nameIdx = cols.indexOf(filters.nameColumn);
   const descIdx = cols.indexOf(filters.descriptionColumn);
 
-  // Check if there are more pages of data.
-  let nextNextPage: number | null = null;
-  if (values.values.length <= MAX_ROWS) {
-    nextNextPage = row + MAX_ROWS;
-  }
-  return {
-    nextPage: nextNextPage,
-    records: values.values.map((rowValue, idx) => {
+  const records =
+    values.values?.map((rowValue, idx) => {
       return {
         name: rowValue[nameIdx],
         description: rowValue[descIdx],
-        uniqueId: String(row + idx),
+        uniqueId: String(filters.sheetUrl + (row + idx)),
         identifier: String(row + idx),
       };
-    }),
+    }) || [];
+
+  return {
+    nextPage: records.length > 0 ? row + MAX_ROWS : null,
+    records,
   };
 });
 
